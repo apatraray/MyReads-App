@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import escapeRegExp from 'escape-string-regexp';
 import ListBookItemPerCategory from './ListBookItem';
 import PropTypes from 'prop-types';
 import * as BooksAPI from './BooksAPI';
@@ -15,27 +14,21 @@ class SearchBook extends Component {
     allBooks: []
   }
   updateQuery = (query) => {
-//    this.setState({query: query.replace(/^\s+|\s+$/, ' ')})
-//    let newQuery = query.replace(/^\s+|\s+$/, ' ')
     this.setState({query})
-
     BooksAPI.search(query).then((allBooks)=>{
       if(allBooks !== undefined ){
-        if(allBooks.error !== "empty query")
+        if(allBooks.error !== "empty query"){
           this.setState({allBooks})
+        }
         else {
           this.setState({allBooks: []})
-          console.log(this.state.allBooks)
          }
         }
         else {
           this.setState({allBooks: []})
-          console.log(this.state.allBooks)
-      }
-      console.log("query",query)
-
-    })
-    }
+        }
+      })
+  }
   render() {
     const {books, updateShelf} = this.props
     const {query, allBooks} = this.state

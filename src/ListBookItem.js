@@ -12,14 +12,13 @@ class ListBookItemPerCategory extends Component {
   }
   changeShelfValue = (book, shelfValue) => {
     this.props.updateShelf(book, shelfValue)
-    console.log(this.props.shelfBooks)
     this.props.shelfBooks.filter((b) => ((b.id === book.id) && (this.setState({isBookPresent: true}))))
     if(!(this.state.isBookPresent))
       (this.props.shelfBooks.push(book))
   }
 
   render(){
-  const {books, shelfBooks, updateShelf} = this.props
+  const {books} = this.props
 
   return (
   <ol className="books-grid">
