@@ -20,25 +20,25 @@ class SearchBook extends Component {
     this.setState({query})
 
     BooksAPI.search(query).then((allBooks)=>{
-      this.setState({allBooks})
-    })
-    if(this.state.allBooks === undefined)
-      this.setState({allBooks: []})
-    console.log("query",query)
-    console.log(this.state.allBooks)
+      if(allBooks !== undefined ){
+        if(allBooks.error !== "empty query")
+          this.setState({allBooks})
+        else {
+          this.setState({allBooks: []})
+          console.log(this.state.allBooks)
+         }
+        }
+        else {
+          this.setState({allBooks: []})
+          console.log(this.state.allBooks)
+      }
+      console.log("query",query)
 
-  }
+    })
+    }
   render() {
     const {books, updateShelf} = this.props
     const {query, allBooks} = this.state
-/*    let showBooks=[]
-    console.log("query",query)
-    const match = new RegExp(escapeRegExp(query), 'i')
-    console.log(allBooks)
-    if(allBooks !== undefined ){
-      if(allBooks.error !== "empty query")
-        showBooks = allBooks.filter((book) => match.test(book.title))
-    }*/
 
     return (
       <div className="search-books">
@@ -54,7 +54,7 @@ class SearchBook extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ListBookItemPerCategory books={allBooks} updateShelf={updateShelf}/>
+          <ListBookItemPerCategory books={allBooks} updateShelf={updateShelf} shelfBooks={books}/>
         </div>
       </div>
     )

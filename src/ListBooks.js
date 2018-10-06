@@ -25,7 +25,7 @@ class ListBooks extends Component {
             <li key={bookshelf.id} className="bookshelf">
               <h2 className="bookshelf-title">{bookshelf.title}</h2>
               <div className="bookshelf-books">
-                <ListBookItemPerCategory books={books.filter((book) => book.shelf===bookshelf.id)} updateShelf={updateShelf}/>
+                <ListBookItemPerCategory books={books.filter((book) => book.shelf===bookshelf.id)} updateShelf={updateShelf} shelfBooks={[]}/>
               </div>
             </li>
           ))}

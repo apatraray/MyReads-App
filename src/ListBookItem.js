@@ -1,15 +1,36 @@
-import React from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
-const ListBookItemPerCategory = (props) =>(
+class ListBookItemPerCategory extends Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    shelfBooks: PropTypes.array.isRequired,
+    updateShelf : PropTypes.func.isRequired
+  }
+  state = {
+    isBookPresent: false?0:1
+  }
+  changeShelfValue = (book, shelfValue) => {
+    this.props.updateShelf(book, shelfValue)
+    console.log(this.props.shelfBooks)
+    this.props.shelfBooks.filter((b) => ((b.id === book.id) && (this.setState({isBookPresent: true}))))
+    if(!(this.state.isBookPresent))
+      (this.props.shelfBooks.push(book))
+  }
+
+  render(){
+  const {books, shelfBooks, updateShelf} = this.props
+
+  return (
   <ol className="books-grid">
-    {props.books.map((book) => (
+    {books.map((book) => (
       <li key={book.id} className="book-list-item">
         <div className="book">
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks?book.imageLinks.smallThumbnail:'http://via.placeholder.com/128x193?text=bookThumbnail'})`}}>
             </div>
               <div className="book-shelf-changer">
-                <select value={book.shelf} onChange={(event) => props.updateShelf(book, event.target.value)}>
+                <select value={book.shelf} onChange={(event) => this.changeShelfValue(book, event.target.value)}>
                   <option value="move" disabled>Move to...</option>
                   <option value="currentlyReading">Currently Reading</option>
                   <option value="wantToRead">Want to Read</option>
@@ -24,6 +45,6 @@ const ListBookItemPerCategory = (props) =>(
     </li>
   ))}
   </ol>
-)
-
+)}
+}
 export default ListBookItemPerCategory
