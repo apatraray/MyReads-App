@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import escapeRegExp from 'escape-string-regexp';
 import ListBookItemPerCategory from './ListBookItem';
 import PropTypes from 'prop-types';
+import * as BooksAPI from './BooksAPI';
 
 class SearchBook extends Component {
   static propTypes = {
@@ -10,21 +11,35 @@ class SearchBook extends Component {
     updateShelf : PropTypes.func.isRequired
   }
   state = {
-    query: ''
+    query: '',
+    allBooks: []
   }
   updateQuery = (query) => {
-    this.setState({query: query.replace(/^\s+|\s+$/, ' ')})
-  }
-  clearQuery = (query) => {
-    this.setState({query: ''})
-  }
+//    this.setState({query: query.replace(/^\s+|\s+$/, ' ')})
+//    let newQuery = query.replace(/^\s+|\s+$/, ' ')
+    this.setState({query})
 
+    BooksAPI.search(query).then((allBooks)=>{
+      this.setState({allBooks})
+    })
+    if(this.state.allBooks === undefined)
+      this.setState({allBooks: []})
+    console.log("query",query)
+    console.log(this.state.allBooks)
+
+  }
   render() {
     const {books, updateShelf} = this.props
-    const {query} = this.state
-    let showBooks
+    const {query, allBooks} = this.state
+/*    let showBooks=[]
+    console.log("query",query)
     const match = new RegExp(escapeRegExp(query), 'i')
-    showBooks = books.filter((book) => match.test(book.title))
+    console.log(allBooks)
+    if(allBooks !== undefined ){
+      if(allBooks.error !== "empty query")
+        showBooks = allBooks.filter((book) => match.test(book.title))
+    }*/
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -39,13 +54,7 @@ class SearchBook extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          {showBooks.length !== books.length && (
-           <div className='showing-books'>
-             <span>Found {showBooks.length} of {books.length} books</span>
-             <button onClick={this.clearQuery}>show all</button>
-           </div>
-          )}
-          <ListBookItemPerCategory books={showBooks} updateShelf={updateShelf}/>
+          <ListBookItemPerCategory books={allBooks} updateShelf={updateShelf}/>
         </div>
       </div>
     )
