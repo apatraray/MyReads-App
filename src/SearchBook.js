@@ -2,36 +2,27 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ListBookItemPerCategory from './ListBookItem';
 import PropTypes from 'prop-types';
-import * as BooksAPI from './BooksAPI';
 
 class SearchBook extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
-    updateShelf : PropTypes.func.isRequired
+    updateShelf : PropTypes.func.isRequired,
+    getBooks : PropTypes.func.isRequired,
+    shelfBooks : PropTypes.array.isRequired
   }
   state = {
-    query: '',
-    allBooks: []
+    query: ''
   }
   updateQuery = (query) => {
     this.setState({query})
-    BooksAPI.search(query).then((allBooks)=>{
-      if(allBooks !== undefined ){
-        if(allBooks.error !== "empty query"){
-          this.setState({allBooks})
-        }
-        else {
-          this.setState({allBooks: []})
-         }
-        }
-        else {
-          this.setState({allBooks: []})
-        }
-      })
   }
   render() {
-    const {books, updateShelf} = this.props
-    const {query, allBooks} = this.state
+    const {books, getBooks, updateShelf, shelfBooks} = this.props
+    const {query} = this.state
+
+    if(query) {
+      getBooks(query)
+    }
 
     return (
       <div className="search-books">
@@ -47,7 +38,7 @@ class SearchBook extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ListBookItemPerCategory books={allBooks} updateShelf={updateShelf} shelfBooks={books}/>
+          <ListBookItemPerCategory books={books} updateShelf={updateShelf} shelfBooks={shelfBooks}/>
         </div>
       </div>
     )

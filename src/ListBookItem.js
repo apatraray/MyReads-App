@@ -11,10 +11,10 @@ class ListBookItemPerCategory extends Component {
     isBookPresent: false?0:1
   }
   changeShelfValue = (book, shelfValue) => {
-    this.props.updateShelf(book, shelfValue)
     this.props.shelfBooks.filter((b) => ((b.id === book.id) && (this.setState({isBookPresent: true}))))
     if(!(this.state.isBookPresent))
       (this.props.shelfBooks.push(book))
+    this.props.updateShelf(book, shelfValue)
   }
 
   render(){
@@ -39,7 +39,7 @@ class ListBookItemPerCategory extends Component {
               </div>
             </div>
         <div className="book-title">{book.title}</div>
-        <div className="book-authors">{book.authors}</div>
+        <div className="book-authors">{book.authors?book.authors.join(", ") : ""}</div>
       </div>
     </li>
   ))}

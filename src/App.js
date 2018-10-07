@@ -7,7 +7,8 @@ import './App.css';
 
 class BooksApp extends Component  {
   state = {
-    books : []
+    books : [],
+    allBooks : []
   }
   componentDidMount() {
     BooksAPI.getAll().then((books)=>{
@@ -17,9 +18,26 @@ class BooksApp extends Component  {
 
   changeShelf= (book, shelf)=> {
     this.setState((state)=>({
-      books: (state.books.filter((b)=>(b.id === book.id)&& (b.shelf = shelf))) && state.books
+      books: (state.books.filter((b)=>(b.id === book.id)&& (b.shelf = shelf))) && state.books,
+      allBooks: (state.allBooks.filter((b)=>(b.id === book.id)&& (b.shelf = shelf))) && state.allBooks
     }))
     BooksAPI.update(book, shelf)
+  }
+
+  findBooks = (query)=>{
+    BooksAPI.search(query).then((allBooks)=>{
+      if(allBooks !== undefined ){
+        if(allBooks.error !== "empty query"){
+          this.setState({allBooks})
+        }
+        else {
+          this.setState({allBooks: []})
+         }
+        }
+        else {
+          this.setState({allBooks: []})
+        }
+      })
   }
 
   render() {
@@ -30,7 +48,8 @@ class BooksApp extends Component  {
         )}
         />
         <Route path="/search" render={() => (
-          <SearchBook updateShelf={this.changeShelf} books={this.state.books}/>
+          <SearchBook updateShelf={this.changeShelf} getBooks={this.findBooks}
+          books={this.state.allBooks} shelfBooks={this.state.books}/>
         )}
         />
       </div>
