@@ -2,28 +2,57 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ListBookItemPerCategory from './ListBookItem';
 import PropTypes from 'prop-types';
+import * as BooksAPI from './BooksAPI';
+
 
 class SearchBook extends Component {
   static propTypes = {
-    books: PropTypes.array.isRequired,
     updateShelf : PropTypes.func.isRequired,
-    getBooks : PropTypes.func.isRequired,
     shelfBooks : PropTypes.array.isRequired
   }
   state = {
-    query: ''
+    query: '',
+    allBooks : []
   }
+
+  findBooks = (query)=>{
+    BooksAPI.search(query).then((allBooks)=>{
+      if(allBooks !== undefined ){
+        if(allBooks.error !== "empty query"){
+          this.setState({allBooks})
+        }
+        else {
+          this.setState({allBooks: []})
+         }
+        }
+        else {
+          this.setState({allBooks: []})
+        }
+      })
+      console.log("allBooks",this.state.allBooks)
+
+}
+getshelf = () => {
+for(var i=0; i<this.state.allBooks.length; i++){
+  if(this.props.shelfBooks){
+    this.state.allBooks[i].shelf = "none"
+    this.props.shelfBooks.filter((b)=>(b.id === this.state.allBooks[i].id)&& (this.state.allBooks[i].shelf = b.shelf))
+  console.log("now rendering shelf 2", this.state.allBooks[i])
+}
+}
+}
+
+
   updateQuery = (query) => {
     this.setState({query})
   }
   render() {
-    const {books, getBooks, updateShelf, shelfBooks} = this.props
-    const {query} = this.state
-
+    const {updateShelf, shelfBooks} = this.props
+    const {query, allBooks} = this.state
     if(query) {
-      getBooks(query)
+      this.findBooks(query)
+      this.getshelf()
     }
-
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -38,7 +67,7 @@ class SearchBook extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ListBookItemPerCategory books={books} updateShelf={updateShelf} shelfBooks={shelfBooks}/>
+          <ListBookItemPerCategory books={allBooks} updateShelf={updateShelf} shelfBooks={shelfBooks}/>
         </div>
       </div>
     )

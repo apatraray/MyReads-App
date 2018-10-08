@@ -19,7 +19,6 @@ class ListBookItemPerCategory extends Component {
 
   render(){
   const {books} = this.props
-
   return (
   <ol className="books-grid">
     {books.map((book) => (
