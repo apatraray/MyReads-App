@@ -4,7 +4,9 @@ import ListBookItemPerCategory from './ListBookItem';
 import PropTypes from 'prop-types';
 import * as BooksAPI from './BooksAPI';
 
-
+/**
+ * Implementation for the search page
+ */
 class SearchBook extends Component {
   static propTypes = {
     updateShelf : PropTypes.func.isRequired,
@@ -14,7 +16,7 @@ class SearchBook extends Component {
     query: '',
     allBooks : []
   }
-
+  //function to get all the books matching to the search query
   findBooks = (query)=>{
     BooksAPI.search(query).then((allBooks)=>{
       if(allBooks !== undefined ){
@@ -29,26 +31,26 @@ class SearchBook extends Component {
           this.setState({allBooks: []})
         }
       })
-      console.log("allBooks",this.state.allBooks)
-
-}
-getshelf = () => {
-for(var i=0; i<this.state.allBooks.length; i++){
-  if(this.props.shelfBooks){
-    this.state.allBooks[i].shelf = "none"
-    this.props.shelfBooks.filter((b)=>(b.id === this.state.allBooks[i].id)&& (this.state.allBooks[i].shelf = b.shelf))
-  console.log("now rendering shelf 2", this.state.allBooks[i])
-}
-}
-}
-
+  }
+  //set the result of searched books as none for default otherwise set the shelf
+  //for those who are present in the bookshelf
+  getshelf = () => {
+    for(var i=0; i<this.state.allBooks.length; i++){
+      if(this.props.shelfBooks){
+        this.state.allBooks[i].shelf = "none"
+        this.props.shelfBooks.filter((b)=>(b.id === this.state.allBooks[i].id)&& (this.state.allBooks[i].shelf = b.shelf))
+      }
+    }
+  }
 
   updateQuery = (query) => {
     this.setState({query})
   }
+  //render the searchpage when there is change in state variables
   render() {
     const {updateShelf, shelfBooks} = this.props
     const {query, allBooks} = this.state
+    //when there is query, find the books and assign them a shelf
     if(query) {
       this.findBooks(query)
       this.getshelf()

@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import ListBookItemPerCategory from './ListBookItem';
 import { Link } from 'react-router-dom';
 
+/**
+ * Implementation for the main page to show the books on the shelf
+ */
 class ListBooks extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
@@ -11,6 +14,7 @@ class ListBooks extends Component {
 
   render(){
     const {books, updateShelf} = this.props
+    //currently three shelfs are assigned to the main page
     const bookshelfs = [{id: "currentlyReading", title: "Currently Reading"},
                       {id: "wantToRead", title: "Want to Read"},
                       {id: "read", title: "Read"}]
@@ -21,6 +25,7 @@ class ListBooks extends Component {
         </div>
         <div className="list-books-content">
           <ol className="bookshelf-grid">
+          {/*get the book according to the book shelf*/}
           {bookshelfs.map((bookshelf) => (
             <li key={bookshelf.id} className="bookshelf">
               <h2 className="bookshelf-title">{bookshelf.title}</h2>

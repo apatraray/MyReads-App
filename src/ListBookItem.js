@@ -1,15 +1,22 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * This component actually reponsible for showing what should be displayed in
+ * main page or search page
+ */
 class ListBookItemPerCategory extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
     shelfBooks: PropTypes.array.isRequired,
     updateShelf : PropTypes.func.isRequired
   }
+  //if book is not present, make it present
   state = {
     isBookPresent: false?0:1
   }
+  //if a book is present in the search page, assign it a shelf only
+  //after adding it to main page
   changeShelfValue = (book, shelfValue) => {
     this.props.shelfBooks.filter((b) => ((b.id === book.id) && (this.setState({isBookPresent: true}))))
     if(!(this.state.isBookPresent))
