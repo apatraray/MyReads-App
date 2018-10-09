@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import ListBookItem from './ListBookItem';
 import PropTypes from 'prop-types';
 import * as BooksAPI from './BooksAPI';
+import {DebounceInput} from 'react-debounce-input';
 
 /**
  * Implementation for the search page
@@ -25,12 +26,12 @@ class SearchBook extends Component {
         }
         else {
           this.setState({allBooks: []})
-         }
         }
-        else {
+      }
+      else {
           this.setState({allBooks: []})
-        }
-      })
+      }
+    })
   }
   //set the result of searched books as none for default otherwise set the shelf
   //for those who are present in the bookshelf
@@ -51,10 +52,14 @@ class SearchBook extends Component {
     const {updateShelf, shelfBooks} = this.props
     const {query, allBooks} = this.state
     //when there is query, find the books and assign them a shelf
-    if(query) {
+  //  if(query) {
+      console.log("query2", query)
       this.findBooks(query)
       this.getshelf()
-    }
+  /*  }
+    else{
+
+    }*/
     return (
       <div className="search-books">
         <div className="search-books-bar">

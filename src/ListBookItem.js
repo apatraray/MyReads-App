@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {DebounceInput} from 'react-debounce-input';
 
 /**
  * This component actually reponsible for showing what should be displayed in
@@ -32,10 +33,15 @@ class ListBookItem extends Component {
       <li key={book.id} className="book-list-item">
         <div className="book">
           <div className="book-top">
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks?book.imageLinks.smallThumbnail:'http://via.placeholder.com/128x193?text=bookThumbnail'})`}}>
+            <div className="book-cover" style={{ width: 128, height: 193,
+              backgroundImage: `url(
+                ${book.imageLinks?book.imageLinks.smallThumbnail:
+                  'http://via.placeholder.com/128x193?text=bookThumbnail'})`}}>
             </div>
               <div className="book-shelf-changer">
-                <select value={book.shelf || "none"} onChange={(event) => this.changeShelfValue(book, event.target.value)}>
+                <DebounceInput element="select" minLength={2}
+                  debounceTimeout={100} value={book.shelf || "none"}
+                  onChange={(event) => this.changeShelfValue(book, event.target.value)}>
                   <option value="move" disabled>Move to...</option>
                   <option value="currentlyReading">Currently Reading</option>
                   <option value="wantToRead">Want to Read</option>
