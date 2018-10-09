@@ -8,8 +8,10 @@ This app can be accessed using index.html after downloading the project from (ht
 ## Running using local machine
 
 ### Running
-local client server can be run by following command:
- `npm start`
+Start the App:
+`start a terminal`
+`run npm install`
+`run npm start`
 
 ### Using the app
 

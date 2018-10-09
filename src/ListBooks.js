@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import ListBookItemPerCategory from './ListBookItem';
+import ListBookItem from './ListBookItem';
 import { Link } from 'react-router-dom';
 
 /**
@@ -30,7 +30,7 @@ class ListBooks extends Component {
             <li key={bookshelf.id} className="bookshelf">
               <h2 className="bookshelf-title">{bookshelf.title}</h2>
               <div className="bookshelf-books">
-                <ListBookItemPerCategory books={books.filter((book) => book.shelf===bookshelf.id)} updateShelf={updateShelf} shelfBooks={[]}/>
+                <ListBookItem books={books.filter((book) => book.shelf===bookshelf.id)} updateShelf={updateShelf} shelfBooks={[]}/>
               </div>
             </li>
           ))}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import ListBookItemPerCategory from './ListBookItem';
+import ListBookItem from './ListBookItem';
 import PropTypes from 'prop-types';
 import * as BooksAPI from './BooksAPI';
 
@@ -37,7 +37,7 @@ class SearchBook extends Component {
   getshelf = () => {
     for(var i=0; i<this.state.allBooks.length; i++){
       if(this.props.shelfBooks){
-        this.state.allBooks[i].shelf = "none"
+//        this.state.allBooks[i].shelf = "none"
         this.props.shelfBooks.filter((b)=>(b.id === this.state.allBooks[i].id)&& (this.state.allBooks[i].shelf = b.shelf))
       }
     }
@@ -69,7 +69,7 @@ class SearchBook extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ListBookItemPerCategory books={allBooks} updateShelf={updateShelf} shelfBooks={shelfBooks}/>
+          <ListBookItem books={allBooks} updateShelf={updateShelf} shelfBooks={shelfBooks}/>
         </div>
       </div>
     )

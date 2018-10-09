@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
  * This component actually reponsible for showing what should be displayed in
  * main page or search page
  */
-class ListBookItemPerCategory extends Component {
+class ListBookItem extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
     shelfBooks: PropTypes.array.isRequired,
@@ -35,7 +35,7 @@ class ListBookItemPerCategory extends Component {
             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks?book.imageLinks.smallThumbnail:'http://via.placeholder.com/128x193?text=bookThumbnail'})`}}>
             </div>
               <div className="book-shelf-changer">
-                <select value={book.shelf} onChange={(event) => this.changeShelfValue(book, event.target.value)}>
+                <select value={book.shelf || "none"} onChange={(event) => this.changeShelfValue(book, event.target.value)}>
                   <option value="move" disabled>Move to...</option>
                   <option value="currentlyReading">Currently Reading</option>
                   <option value="wantToRead">Want to Read</option>
@@ -52,4 +52,4 @@ class ListBookItemPerCategory extends Component {
   </ol>
 )}
 }
-export default ListBookItemPerCategory
+export default ListBookItem
