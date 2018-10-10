@@ -9,7 +9,7 @@ class ListBookItem extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
     shelfBooks: PropTypes.array.isRequired,
-    updateShelf : PropTypes.func.isRequired
+    updateShelf: PropTypes.func.isRequired
   }
   //if book is not present, make it present
   state = {
@@ -20,21 +20,25 @@ class ListBookItem extends Component {
   //after adding it to main page
   changeShelfValue = (book, shelfValue) => {
     this.props.shelfBooks.filter((b) => ((b.id === book.id) && (this.setState({isBookPresent: true}))))
-    if(!(this.state.isBookPresent))
+    if(!(this.state.isBookPresent) && this.props.shelfBooks !== []){
       (this.props.shelfBooks.push(book))
+      console.log("inside changeShelfValue", book);
+    }
+      console.log("update book shelf", book, shelfValue);
     this.props.updateShelf(book, shelfValue)
   }
 
-  getShelfValue = (book) => {
-    console.log(book.shelf)
-   return  ((book.shelf!=="undefined"))?book.shelf:"none"
-    //  return ((book.shelf!=="undefined") && (book.shelf!=="undefined"))?book.shelf:"none"
-  }
+  // getShelfValue = (book) => {
+  //   console.log(book.shelf)
+  //  return  ((book.shelf!=="undefined"))?book.shelf:"none"
+  //   //  return ((book.shelf!=="undefined") && (book.shelf!=="undefined"))?book.shelf:"none"
+  // }
 
   render(){
   const {books} = this.props
   console.log("inside render ListBookItem", books)
-
+/*  if(books)
+    bookListIsReady()*/
   return (
   <ol className="books-grid">
     {books.map((book) => (

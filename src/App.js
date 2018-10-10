@@ -20,7 +20,7 @@ class BooksApp extends Component  {
     BooksAPI.getAll().then((books)=>{
       this.setState({books})
     })
-    console.log("first")
+    console.log("first", this.state.books)
   }
 
   /**
@@ -30,17 +30,37 @@ class BooksApp extends Component  {
    * change the shelf of the book in bookshelf in the main page according to id. Change the same in sever.
    */
   changeShelf= (book, shelf)=> {
+    BooksAPI.update(book, shelf)
+    BooksAPI.getAll().then((books)=>{
+        this.setState({books})
+      })
     this.setState((state)=>({
       books: (state.books.filter((b)=>(b.id === book.id)&& (b.shelf = shelf))) && state.books
     }))
-    BooksAPI.update(book, shelf)
-    BooksAPI.getAll().then((books)=>{
+  /* BooksAPI.getAll().then((books)=>{
       this.setState({books})
-    })
-    console.log("second")
+    })*/
+    console.log("book after changing shelf",book )
   }
+  /*
+  findSearchedBooks= (query, allBooks)=>{
+    if(query!=='') {
+//      this.getBooksUpdated()
+      this.findBooks(query)
+      console.log("query after find", query)
+      console.log("allBooks after find", this.state.allBooks)
+
+      this.getshelf()
+      console.log("allBooks after shelf", this.state.allBooks)
+    }
+    else{
+      this.setState({allBooks: []})
+    }
+  }
+    */
 //render the App
   render() {
+    console.log("inside render of App")
     return (
       <div className="app">
       {/*route for the main page*/}
@@ -50,7 +70,7 @@ class BooksApp extends Component  {
         />
         {/*route for the search page*/}
         <Route path="/search" render={() => (
-          <SearchBook updateShelfSearch={this.changeShelf} updateShelf={this.changeShelf} shelfBooks={this.state.books}/>
+          <SearchBook updateShelf={this.changeShelf} shelfBooks={this.state.books}/>
         )}
         />
       </div>
