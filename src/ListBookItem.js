@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {DebounceInput} from 'react-debounce-input';
 
 /**
  * This component actually reponsible for showing what should be displayed in
@@ -14,7 +13,8 @@ class ListBookItem extends Component {
   }
   //if book is not present, make it present
   state = {
-    isBookPresent: false?0:1
+    isBookPresent: false?0:1,
+    shelf: "none"
   }
   //if a book is present in the search page, assign it a shelf only
   //after adding it to main page
@@ -25,8 +25,16 @@ class ListBookItem extends Component {
     this.props.updateShelf(book, shelfValue)
   }
 
+  getShelfValue = (book) => {
+    console.log(book.shelf)
+   return  ((book.shelf!=="undefined"))?book.shelf:"none"
+    //  return ((book.shelf!=="undefined") && (book.shelf!=="undefined"))?book.shelf:"none"
+  }
+
   render(){
   const {books} = this.props
+  console.log("inside render ListBookItem", books)
+
   return (
   <ol className="books-grid">
     {books.map((book) => (
@@ -39,9 +47,8 @@ class ListBookItem extends Component {
                   'http://via.placeholder.com/128x193?text=bookThumbnail'})`}}>
             </div>
               <div className="book-shelf-changer">
-                <DebounceInput element="select" minLength={2}
-                  debounceTimeout={100} value={book.shelf || "none"}
-                  onChange={(event) => this.changeShelfValue(book, event.target.value)}>
+                <select value={book.shelf} onChange=
+                {(event) => this.changeShelfValue(book, event.target.value)}>
                   <option value="move" disabled>Move to...</option>
                   <option value="currentlyReading">Currently Reading</option>
                   <option value="wantToRead">Want to Read</option>

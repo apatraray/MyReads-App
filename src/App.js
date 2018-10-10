@@ -20,17 +20,12 @@ class BooksApp extends Component  {
     BooksAPI.getAll().then((books)=>{
       this.setState({books})
     })
+    console.log("first")
   }
 
   /**
    * update the bookself in the main page from the server data after there is update in the component
-   */
-  componentDidUpdate() {
-    BooksAPI.getAll().then((books)=>{
-      this.setState({books})
-    })
-  }
-
+*/
   /**
    * change the shelf of the book in bookshelf in the main page according to id. Change the same in sever.
    */
@@ -39,6 +34,10 @@ class BooksApp extends Component  {
       books: (state.books.filter((b)=>(b.id === book.id)&& (b.shelf = shelf))) && state.books
     }))
     BooksAPI.update(book, shelf)
+    BooksAPI.getAll().then((books)=>{
+      this.setState({books})
+    })
+    console.log("second")
   }
 //render the App
   render() {
@@ -51,7 +50,7 @@ class BooksApp extends Component  {
         />
         {/*route for the search page*/}
         <Route path="/search" render={() => (
-          <SearchBook updateShelf={this.changeShelf} shelfBooks={this.state.books}/>
+          <SearchBook updateShelfSearch={this.changeShelf} updateShelf={this.changeShelf} shelfBooks={this.state.books}/>
         )}
         />
       </div>
