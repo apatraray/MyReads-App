@@ -13,21 +13,17 @@ class ListBookItem extends Component {
   }
   //if book is not present, make it present
   state = {
-    isBookPresent: false?0:1
+    isBookPresent: false
   }
-  //if a book is present in the search page, assign it a shelf only
-  //after adding it to main page
+  //if a book shelf is none, push it to the main page and to the correct shelf
   changeShelfValue = (book, shelfValue) => {
-    this.props.shelfBooks.filter((b) => ((b.id === book.id) && (this.setState({isBookPresent: true}))))
-    if(!(this.state.isBookPresent) && this.props.shelfBooks !== []){
-      (this.props.shelfBooks.push(book))
-    }
+    if(book.shelf === "none")
+        (this.props.shelfBooks.push(book))
     this.props.updateShelf(book, shelfValue)
   }
 
   render(){
     const {books} = this.props
-
     return (
     <ol className="books-grid">
       {books.map((book) => (
